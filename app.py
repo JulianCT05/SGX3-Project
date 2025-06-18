@@ -34,6 +34,16 @@ def columns():
     column_names = traffic_df.columns.tolist()
     return jsonify({"columns": column_names})
 
+@app.route("/UniqueValues")
+def uniqueValues():
+    columnName = request.args.get("name")
+    unique_vals = traffic_df[columnName].dropna().unique().tolist()
+    response = {
+        "Column": columnName,
+        "UniqueValues": unique_vals
+    }
+    return jsonify(response)
+
 @app.route("/info")
 def info():
     global traffic_df
