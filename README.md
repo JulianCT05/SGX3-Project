@@ -1,38 +1,33 @@
-# SGX3 Coding repo
-Traffic Data API
-A Flask-based REST API for querying and filtering traffic incident data from CSV files.
+### SGX3 Coding repo
+## Traffic Data API
+<p> A Flask-based REST API for querying and filtering traffic incident data from CSV files.
 Description
 This API provides endpoints to search and filter traffic incident data based on various criteria including location, time, severity, and geographic proximity.
-Installation
+Installation</p>
 
-Clone the repository
-Install required dependencies:
-bashpip install flask pandas geopy
+## Clone the repository
+# Install required dependencies:
+<p>bashpip install flask pandas geopy</p>
 
-Ensure your CSV traffic data files are in the project directory
-Run the application:
-bashpython app.py
+<p>Ensure your CSV traffic data files are in the project directory
+Run the application:</p>
+'''
+python app.py
+'''
 
+<p>The server will start at http://0.0.0.0:8062</p>
 
-The server will start at http://0.0.0.0:8062
-API Endpoints
-GET /search
-Search for traffic incidents by location.
+## API Endpoints
+# GET /search
+<p> Search for traffic incidents by location.
 Parameters:
+location (string): Location keyword to search for</p>
+  
+**Example:**
+> GET /search?location=downtown
 
-location (string): Location keyword to search for
 
-Example:
-GET /search?location=downtown
-GET /severity
-Filter incidents by severity level.
-Parameters:
-
-severity (string): Severity level (e.g., "High", "Medium", "Low")
-
-Example:
-GET /severity?severity=High
-GET /HoursBetween
+# GET /HoursBetween
 Get incidents that occurred between specific hours.
 Parameters:
 
