@@ -1,78 +1,117 @@
-### SGX3 Coding repo
-## Traffic Data API
-<p> A Flask-based REST API for querying and filtering traffic incident data from CSV files.
-Description
-This API provides endpoints to search and filter traffic incident data based on various criteria including location, time, severity, and geographic proximity.
-Installation</p>
+# 🚦 Austin Traffic Data API
 
-## Clone the repository
-# Install required dependencies:
-<p>bashpip install flask pandas geopy</p>
+A Flask-based REST API to analyze and search Austin traffic incident data from a CSV dataset.
 
-<p>Ensure your CSV traffic data files are in the project directory
-Run the application:</p>
-'''
-python app.py
-'''
+---
 
-<p>The server will start at http://0.0.0.0:8062</p>
+## 🔧 Setup Instructions
 
-## API Endpoints
-# GET /search
-<p> Search for traffic incidents by location.
-Parameters:
-location (string): Location keyword to search for</p>
-  
-**Example:**
-> GET /search?location=downtown
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+   ```
 
+2. **Install required dependencies**:
+   ```bash
+   pip install flask pandas geopy
+   ```
 
-# GET /HoursBetween
-Get incidents that occurred between specific hours.
-Parameters:
+3. **Add your dataset**:  
+   Place the `atxtraffic.csv` file (containing Austin traffic incidents) in the project directory.
 
-hours1 (integer): Start hour (0-23)
-hours2 (integer): End hour (0-23)
+4. **Run the server**:
+   ```bash
+   python app.py
+   ```
 
-Example:
-GET /HoursBetween?hours1=8&hours2=18
-GET /1kiloSearch
-Find incidents within 1km of specified coordinates.
-Parameters:
+   The API will be accessible at `http://0.0.0.0:8062`.
 
-lat (float): Latitude coordinate
-long (float): Longitude coordinate
+---
 
-Example:
-GET /1kiloSearch?lat=40.7128&long=-74.0060
-Response Format
-All endpoints return JSON responses with:
-json{
-  "match_count": number,
-  "matches": [array of matching records]
-}
-Data Requirements
-The API expects CSV files containing traffic data with columns including:
+## 📂 API Routes
 
-Location
-Severity
-Published Date
-Latitude
-Longitude
+### `/HoursBetween`
 
-Usage
-All endpoints return JSON with the following structure:
-json{
-  "match_count": number,
-  "matches": [array of matching records]
-}
-Contributing
+Returns all traffic incidents that occurred between two hours.
 
-Fork the repository
-Create a feature branch
-Commit your changes
-Push to the branch
-Create a Pull Request
+- **Method:** `GET`
+- **Query Parameters:**
+  - `hours1`: (int) Starting hour (inclusive)
+  - `hours2`: (int) Ending hour (exclusive)
 
-License
+- **Example Request:**
+  ```
+  /HoursBetween?hours1=7&hours2=9
+  ```
+
+- **Example Response:**
+  ```json
+  {
+    "match_count": 153,
+    "matches": [
+      {
+        "Published Date": "2022-05-10 07:34:00",
+        "Latitude": 30.2672,
+        "Longitude": -97.7431,
+        ...
+      },
+      ...
+    ]
+  }
+  ```
+
+---
+
+### `/1kiloSearch`
+
+Finds all incidents within 1 kilometer of a given latitude and longitude.
+
+- **Method:** `GET`
+- **Query Parameters:**
+  - `lat`: (float) Latitude
+  - `long`: (float) Longitude
+
+- **Example Request:**
+  ```
+  /1kiloSearch?lat=30.2672&long=-97.7431
+  ```
+
+- **Example Response:**
+  ```json
+  {
+    "match_count": 22,
+    "matches": [
+      {
+        "Published Date": "2022-06-01 15:20:00",
+        "Latitude": 30.2675,
+        "Longitude": -97.7420,
+        ...
+      },
+      ...
+    ]
+  }
+  ```
+
+---
+
+## 🧪 Test with curl
+
+```bash
+curl "http://localhost:8062/HoursBetween?hours1=15&hours2=17"
+curl "http://localhost:8062/1kiloSearch?lat=30.2672&long=-97.7431"
+```
+
+---
+
+## 📌 Notes
+
+- This API assumes the dataset contains valid `Latitude`, `Longitude`, and `Published Date` columns.
+- The `Published Date` is parsed into hour values to support filtering.
+- All data is loaded into memory once at startup for fast access.
+
+---
+
+## 📄 License
+
 This project is licensed under the MIT License.
